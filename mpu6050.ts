@@ -136,17 +136,115 @@ namespace RegisterHelper {
 //% weight=100 color=#0fbc11 icon=""
 namespace MPU6050 {
 
+
+    function SetClockSource() {
+
+        let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1);
+        temp = temp & 0xFC;
+        temp = temp | 0x01;    // MPU6050_CLOCK_PLL_XGYRO
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
+    }
+
+    function SetFullScaleGyroRange() {
+        let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_GYRO_CONFIG);
+        temp = temp & 0xE7;
+        temp = temp | 0x00;    // MPU6050_GYRO_FS_250
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_CONFIG, temp); 
+    }
+
+    function SetFullScaleAccelRange() {
+        let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_ACCEL_CONFIG);
+        temp = temp & 0xE7;
+        temp = temp | 0x00;    // MPU6050_ACCEL_FS_2
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_CONFIG, temp); 
+    }
+
+
+
+
+
     
     export let isConnected = false;
     
 
-     //% blockId="getDeviceID" block="Read Gyro Devide ID"
+    //% blockId="getDeviceID" block="Read Gyro Devide ID"
     export function getDeviceID() : number {
         
         let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_WHO_AM_I); 
         return device_id;
     }
+    
+    //% blockId="Initialize" block="Initailize Gyro Sensor"
+    export function initialize() {
+        SetClockSource();
+        SetFullScaleGyroRange();
+        SetFullScaleAccelRange();
+    }
+
+    //% blockId="ReadClockSource" block="Read Clock Source"
+    export function ReadClockSource() : number {
+        return RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1);
+
+    }
+    //% blockId="ReadGyroRange" block="Read Gyro Range"
+    export function ReadGyroRange() : number {
+        return RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_CONFIG);
+
+    }
+    //% blockId="ReadAccRange" block="Read Acceleration Range"
+    export function ReadAccRange() : number {
+        return RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_CONFIG);
+
+    }
+
+
+
+
+
+
+
+
+    /*
+    export function calibrate_Sensors(   ??????  offSets:number[]      ) : boolean {
+
+
+
+
+
+        return 
+    }  
   
+    export type XYZ = {
+        ax: number,
+        ay: number,
+        az: number,
+        gx: number,
+        gy: number,
+        gz: number
+    };
+
+    export function getMotion6() : XYZ {
+
+
+        return {
+            ax:  
+            ay: 
+            az: 
+            gx:
+            gy:
+            gz:
+        }
+
+
+    }   
+
+*/
+
+
+
 
 }
 
