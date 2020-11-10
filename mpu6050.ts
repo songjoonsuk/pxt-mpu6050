@@ -94,6 +94,18 @@ enum MPU6050_AGAIN {
 
 /* #endregion */
 
+
+
+let gbuf = pins.createBuffer(14);
+let ax: number;
+let ay: number;
+let az: number;
+let gx: number;
+let gy: number;
+let gz: number;
+
+
+
 //Functions for helping with reading and writing registers of different sizes
 namespace RegisterHelper {
 
@@ -113,6 +125,16 @@ namespace RegisterHelper {
     export function readRegister8(addr: number, reg: number): number {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
         return pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+    }
+
+    export function readRegister8N(addr: number,reg:number, rep: number) {
+
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        for (let i = 0; i < (rep-1); i++) {
+            gbuf[i] =  pins.i2cReadNumber(addr, NumberFormat.UInt8BE, true);      
+        
+        }
+        gbuf[rep] = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
     }
 
     /**
@@ -173,12 +195,6 @@ namespace MPU6050 {
 
 
 
-
-
-    
-    export let isConnected = false;
-    
-
     //% blockId="getDeviceID" block="Read Gyro Devide ID"
     export function getDeviceID() : number {
         
@@ -210,23 +226,7 @@ namespace MPU6050 {
 
     }
 
-
-
-
-
-
-
-
-    /*
-    export function calibrate_Sensors(   ??????  offSets:number[]      ) : boolean {
-
-
-
-
-
-        return 
-    }  
-  
+ /*
     export type XYZ = {
         ax: number,
         ay: number,
@@ -235,21 +235,65 @@ namespace MPU6050 {
         gy: number,
         gz: number
     };
+*/
+    //% blockId="getMotion" block="Read Motion Data"
+    export function getMotion6() {
 
-    export function getMotion6() : XYZ {
+        RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
 
 
-        return {
-            ax:  
-            ay: 
-            az: 
-            gx:
-            gy:
-            gz:
-        }
-
+        ax = (gbuf[0] << 8) | gbuf[1] ;
+        ay = (gbuf[2] << 8) | gbuf[3] ;
+        az = (gbuf[4] << 8) | gbuf[5] ;
+        gx = (gbuf[8] << 8) | gbuf[9] ;
+        gy = (gbuf[10] << 8) | gbuf[11] ;
+        gz = (gbuf[12] << 8) | gbuf[13] ;
 
     }   
+
+    //% blockId="ReadAX" block="Read AX"
+    export function readAX() : number {
+        return ax;
+    }
+    //% blockId="ReadAY" block="Read AY"
+    export function readAY() : number {
+        return ay;
+    }
+    //% blockId="ReadAZ" block="Read AZ"
+    export function readAZ() : number {
+        return az;
+    }
+    //% blockId="ReadGX" block="Read GX"
+    export function readGX() : number {
+        return gx;
+    }
+    //% blockId="ReadGY" block="Read GY"
+    export function readGY() : number {
+        return gy;
+    }
+    //% blockId="ReadGZ" block="Read GZ"
+    export function readGZ() : number {
+        return gz;
+    }
+
+
+
+
+
+
+
+
+
+
+
+/*
+    export function calibrate_Sensors(   ??????  offSets:number[]      ) : boolean {
+
+
+        return 
+    }  
+
+
 
 */
 

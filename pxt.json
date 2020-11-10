@@ -1,7 +1,7 @@
 {
     "name": "mpu6050",
     "version": "0.0.1",
-    "description": "mpu6050 extension",
+    "description": "microbit GYRO sensor extension",
     "dependencies": {
         "core": "*"
     },
