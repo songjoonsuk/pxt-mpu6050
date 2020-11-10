@@ -162,6 +162,15 @@ namespace MPU6050 {
         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_CONFIG, temp); 
     }
 
+    function SetSleepDisable() {
+        let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_PWR_MGMT_1);
+        temp = temp & 0xBF;
+        temp = temp | 0x00;    // MPU6050_PWR1_SLEEP_BIT
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
+    }
+
+
 
 
 
@@ -182,6 +191,7 @@ namespace MPU6050 {
         SetClockSource();
         SetFullScaleGyroRange();
         SetFullScaleAccelRange();
+        SetSleepDisable();
     }
 
     //% blockId="ReadClockSource" block="Read Clock Source"
