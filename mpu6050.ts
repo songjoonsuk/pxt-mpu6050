@@ -134,7 +134,7 @@ namespace RegisterHelper {
             gbuf[i] =  pins.i2cReadNumber(addr, NumberFormat.UInt8BE, true);      
         
         }
-        gbuf[rep] = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+        gbuf[rep-1] = pins.i2cReadNumber(addr, NumberFormat.UInt8BE, false);
     }
 
     /**
@@ -236,14 +236,14 @@ namespace MPU6050 {
         gz: number
     };
 */
-    //% blockId="getMotion" block="Read Motion Data1"
+    //% blockId="getMotion" block="Read Motion Data2"
     export function getMotion6() {
 
-        // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+         RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
 
 
-        gbuf[0] = 0xaa;
-        gbuf[1] = 0x55;
+    //    gbuf[0] = 0xaa;
+    //    gbuf[1] = 0x55;
 
 
         ax = (gbuf[0] << 8) | gbuf[1] ;
