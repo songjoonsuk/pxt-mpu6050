@@ -162,7 +162,7 @@ namespace MPU6050 {
     function SetClockSource() {
 
         let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1);
-        temp = temp & 0xFC;
+        temp = temp & 0xF8;
         temp = temp | 0x01;    // MPU6050_CLOCK_PLL_XGYRO
 
         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
@@ -195,14 +195,14 @@ namespace MPU6050 {
 
 
 
-    //% blockId="getDeviceID" block="Read Gyro Devide ID"
+    //% blockId="getDeviceID" block="Read Gyro Device ID"
     export function getDeviceID() : number {
         
         let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_WHO_AM_I); 
         return device_id;
     }
     
-    //% blockId="Initialize" block="Initailize Gyro Sensor"
+    //% blockId="Initialize" block="Initailize Gyro Sensor 1"
     export function initialize() {
         SetClockSource();
         SetFullScaleGyroRange();
