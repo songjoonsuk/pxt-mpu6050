@@ -38,62 +38,6 @@ const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
 
 
-/* #region Enums for Modes, etc */
-
-// Parameters for setting the internal integration time of the RGBC clear and IR channel.
-enum MPU6050_ATIME {
-    TIME_2_4_MS = 0xFF,    // 1 2.4 ms 1024
-    TIME_24_MS = 0xF6,     // 10 24 ms 10240
-    TIME_100_MS = 0xD5,    // 42 101 ms 43008
-    TIME_154_MS = 0xC0,    // 64 154 ms 65535
-    TIME_700_MS = 0x00     // 256 700 ms 65535
-}
-
-// Parameters for setting the wait time register.
-enum MPU6050_WTIME {
-    WTIME_2_4_MS = 0xFF,    // 1 2.4 ms 0.029 sec
-    WTIME_204_MS = 0xAB,    // 85 204 ms 2.45 sec
-    WTIME_614_MS = 0x00     // 256 614 ms 7.4 sec
-}
-
-// Parameters for...
-enum RGB {
-    RED,
-    GREEN,
-    BLUE,
-    CLEAR
-}
-
-// Parameters for setting the persistence register. The persistence register controls the filtering interrupt capabilities of the device.
-enum MPU6050_APERS {
-    APERS_0_CLEAR = 0b0000,      // Every RGBC cycle generates an interrupt
-    APERS_1_CLEAR = 0b0001,      // 1 clear channel value outside of threshold range
-    APERS_2_CLEAR = 0b0010,      // 2 clear channel consecutive values out of range
-    APERS_3_CLEAR = 0b0011,      // 3 clear channel consecutive values out of range
-    APERS_5_CLEAR = 0b0100,      // 5 clear channel consecutive values out of range
-    APERS_10_CLEAR = 0b0101,     // 10 clear channel consecutive values out of range
-    APERS_15_CLEAR = 0b0110,     // 15 clear channel consecutive values out of range
-    APERS_20_CLEAR = 0b0111,     // 20 clear channel consecutive values out of range
-    APERS_25_CLEAR = 0b1000,     // 25 clear channel consecutive values out of range
-    APERS_30_CLEAR = 0b1001,     // 30 clear channel consecutive values out of range
-    APERS_35_CLEAR = 0b1010,     // 35 clear channel consecutive values out of range
-    APERS_40_CLEAR = 0b1011,     // 40 clear channel consecutive values out of range
-    APERS_45_CLEAR = 0b1100,     // 45 clear channel consecutive values out of range
-    APERS_50_CLEAR = 0b1101,     // 50 clear channel consecutive values out of range
-    APERS_55_CLEAR = 0b1110,     // 55 clear channel consecutive values out of range
-    APERS_60_CLEAR = 0b1111,     // 60 clear channel consecutive values out of range
-}
-
-// Parameters for setting the gain of the sensor.
-enum MPU6050_AGAIN {
-    GAIN_1X = 0x0,      // 1x gain
-    GAIN_4X = 0x1,      // 4x gain
-    GAIN_16X = 0x2,      // 16x gain
-    GAIN_60X = 0x3       // 60x gain
-}
-
-/* #endregion */
-
 
 
 let gbuf = pins.createBuffer(14);
@@ -103,7 +47,7 @@ let az: number;
 let gx: number;
 let gy: number;
 let gz: number;
-
+let temperature: number;
 
 
 //Functions for helping with reading and writing registers of different sizes
@@ -163,7 +107,7 @@ namespace MPU6050 {
 
         let temp = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1);
         temp = temp & 0xF8;
-        temp = temp | 0x01;    // MPU6050_CLOCK_PLL_XGYRO
+        temp = temp | 0x00;    // MPU6050_CLOCK_PLL_XGYRO
 
         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
     }
@@ -202,7 +146,7 @@ namespace MPU6050 {
         return device_id;
     }
     
-    //% blockId="Initialize" block="Initailize Gyro Sensor 1"
+    //% blockId="Initialize" block="Initailize Gyro Sensor 2"
     export function initialize() {
         SetClockSource();
         SetFullScaleGyroRange();
@@ -226,30 +170,21 @@ namespace MPU6050 {
 
     }
 
- /*
-    export type XYZ = {
-        ax: number,
-        ay: number,
-        az: number,
-        gx: number,
-        gy: number,
-        gz: number
-    };
-*/
-    //% blockId="getMotion" block="Read Motion Data2"
+ 
+    //% blockId="getMotion" block="Read Motion Data 3"
     export function getMotion6() {
 
          RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
 
 
-    //    gbuf[0] = 0xaa;
-    //    gbuf[1] = 0x55;
-
-
+    
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
-        gx = (gbuf[8] << 8) | gbuf[9] ;
+
+        temperature = (gbuf[6] << 8) | gbuf[7] ;
+
+        gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
 
@@ -282,6 +217,10 @@ namespace MPU6050 {
     //% blockId="ReadGZ" block="Read GZ"
     export function readGZ() : number {
         return gz;
+    }
+    //% blockId="ReadTemperature" block="Read Temperature"
+    export function readTemperature() : number {
+        return temperature;
     }
 
 
