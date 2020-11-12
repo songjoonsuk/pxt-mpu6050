@@ -177,18 +177,29 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 9"
+    //% blockId="getMotion" block="Read Motion Data 10"
     export function getMotion6() {
 
+        let reg = MPU6050_RA_ACCEL_XOUT_H;
+        for(let i=0 ; i< 14 ; i++ ) {
+            gbuf[i] = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, reg+i );   
+        }
+
+
+
+
+
+
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+        /*
         temperature = RegisterHelper.readRegisterUInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
         temperature /= 340.00;
         temperature += 36.53;
-
+        */
     //    temperature = (gbuf[0] << 8) | gbuf[1] ;
     
 
-    /*
+    
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
@@ -198,7 +209,7 @@ namespace MPU6050 {
         gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
-    */
+    
 
 
 
