@@ -33,11 +33,16 @@ const MPU6050_RA_YA_OFFS_H              =   0x08 //[15:0] YA_OFFS
 const MPU6050_RA_ZA_OFFS_H              =   0x0A //[15:0] ZA_OFFS
 
 const MPU6050_RA_ACCEL_XOUT_H           =   0x3B
+const MPU6050_RA_TEMP_OUT_H             =   0x41
+const MPU6050_RA_GYRO_XOUT_H            =   0x43
 const MPU6050_RA_USER_CTRL              =   0x6A
 const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
 
 
+let acc_buf = pins.createBuffer(6);
+let gyr_buf = pins.createBuffer(6);
+let tem_buf = pins.createBuffer(2);
 
 
 let gbuf = pins.createBuffer(14);
@@ -171,13 +176,17 @@ namespace MPU6050 {
     }
 
  
-    //% blockId="getMotion" block="Read Motion Data 3"
+ 
+    //% blockId="getMotion" block="Read Motion Data 4"
     export function getMotion6() {
 
-         RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+        // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+        RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H, 2);
 
-
+        temperature = (tem_buf[0] << 8) | tem_buf[1] ;
     
+
+    /*
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
@@ -187,7 +196,7 @@ namespace MPU6050 {
         gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
-
+    */
 
 
 
