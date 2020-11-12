@@ -91,7 +91,7 @@ namespace RegisterHelper {
      */
     export function readRegisterUInt16(addr: number, reg: number): number {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
-        return pins.i2cReadNumber(addr, NumberFormat.UInt16LE);
+        return pins.i2cReadNumber(addr, NumberFormat.UInt16BE);
     }
 
     /**
@@ -99,7 +99,7 @@ namespace RegisterHelper {
      */
     export function readRegisterInt16(addr: number, reg: number): number {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
-        return pins.i2cReadNumber(addr, NumberFormat.Int16LE);
+        return pins.i2cReadNumber(addr, NumberFormat.Int16BE);
     }
 
 }
@@ -177,7 +177,7 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 6"
+    //% blockId="getMotion" block="Read Motion Data 7"
     export function getMotion6() {
 
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
