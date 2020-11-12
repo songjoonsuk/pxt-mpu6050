@@ -45,14 +45,14 @@ let gyr_buf = pins.createBuffer(6);
 let tem_buf = pins.createBuffer(2);
 
 
-let gbuf = pins.createBuffer(14);
-let ax: number;
-let ay: number;
-let az: number;
-let gx: number;
-let gy: number;
-let gz: number;
-let temperature: number;
+export let gbuf = pins.createBuffer(14);
+export let ax: number;
+export let ay: number;
+export let az: number;
+export let gx: number;
+export let gy: number;
+export let gz: number;
+export let temperature: number;
 
 
 //Functions for helping with reading and writing registers of different sizes
@@ -72,7 +72,7 @@ namespace RegisterHelper {
      * Read a 8-byte register of the address location
      */
     export function readRegister8(addr: number, reg: number): number {
-        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE, true);
         return pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
     }
 
@@ -90,16 +90,16 @@ namespace RegisterHelper {
      * Read a (UInt16) 16-byte register of the address location
      */
     export function readRegisterUInt16(addr: number, reg: number): number {
-        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
-        return pins.i2cReadNumber(addr, NumberFormat.UInt16BE);
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE,true);
+        return pins.i2cReadNumber(addr, NumberFormat.UInt16BE,false);
     }
 
     /**
      * Read a (Int16) 16-byte register of the address location
      */
     export function readRegisterInt16(addr: number, reg: number): number {
-        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
-        return pins.i2cReadNumber(addr, NumberFormat.Int16BE);
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE, true);
+        return pins.i2cReadNumber(addr, NumberFormat.Int16BE, false);
     }
 
 }
@@ -177,29 +177,42 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 10"
+    //% blockId="getMotion" block="Read Motion Data 11"
     export function getMotion6() {
-
+/*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
         for(let i=0 ; i< 14 ; i++ ) {
             gbuf[i] = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, reg+i );   
         }
 
-
-
-
+*/
 
 
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
-        /*
-        temperature = RegisterHelper.readRegisterUInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
+        
+        
+
+
+
+        temperature = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
         temperature /= 340.00;
         temperature += 36.53;
-        */
+
+
+        ax = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H)
+        ay = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+2)
+        az = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+4)
+
+
+        gx = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H)
+        gy = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+2)
+        gz = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+4)
+
+        
     //    temperature = (gbuf[0] << 8) | gbuf[1] ;
     
 
-    
+    /*
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
@@ -209,7 +222,7 @@ namespace MPU6050 {
         gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
-    
+    */
 
 
 
