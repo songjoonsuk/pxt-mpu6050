@@ -177,7 +177,7 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 7"
+    //% blockId="getMotion" block="Read Motion Data 8"
     export function getMotion6() {
 
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
