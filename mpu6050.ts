@@ -45,14 +45,14 @@ let gyr_buf = pins.createBuffer(6);
 let tem_buf = pins.createBuffer(2);
 
 
-export let gbuf = pins.createBuffer(14);
-export let ax: number;
-export let ay: number;
-export let az: number;
-export let gx: number;
-export let gy: number;
-export let gz: number;
-export let temperature: number;
+let gbuf = pins.createBuffer(14);
+let ax: number;
+let ay: number;
+let az: number;
+let gx: number;
+let gy: number;
+let gz: number;
+let temperature: number;
 
 
 //Functions for helping with reading and writing registers of different sizes
@@ -177,7 +177,7 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 11"
+    //% blockId="getMotion" block="Read Motion Data 12"
     export function getMotion6() {
 /*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
