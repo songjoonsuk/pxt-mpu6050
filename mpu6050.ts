@@ -177,13 +177,13 @@ namespace MPU6050 {
 
  
 
-    //% blockId="getMotion" block="Read Motion Data 5"
+    //% blockId="getMotion" block="Read Motion Data 6"
     export function getMotion6() {
 
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
-        RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H, 2);
+        temperature = RegisterHelper.readRegisterUInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
 
-        temperature = (gbuf[0] << 8) | gbuf[1] ;
+    //    temperature = (gbuf[0] << 8) | gbuf[1] ;
     
 
     /*
