@@ -78,7 +78,7 @@ namespace RegisterHelper {
 
     export function readRegister8N(addr: number,reg:number, rep: number) {
 
-        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE, true);
         for (let i = 0; i < (rep-1); i++) {
             gbuf[i] =  pins.i2cReadNumber(addr, NumberFormat.UInt8BE, true);      
         
