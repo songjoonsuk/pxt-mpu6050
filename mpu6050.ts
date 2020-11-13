@@ -175,9 +175,21 @@ namespace MPU6050 {
 
     }
 
- 
+    /**
+    * Converts a number to signed 16-bit integer.
+    */
+    function int16( v: number ): number {
+        return (v << 16) >> 16;
+    }
 
-    //% blockId="getMotion" block="Read Motion Data 14"
+    /**
+    * Converts a number to unsigned 16-bit integer.
+    */
+    function uint16( v: number ): number {
+        return v & 0xFFFF;
+    }
+
+    //% blockId="getMotion" block="Read Motion Data 15"
     export function getMotion6() {
 /*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
@@ -188,11 +200,11 @@ namespace MPU6050 {
 */
 
 
-        // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+        RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
         
         
 
-
+/*
 
         temperature = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
     //    temperature /= 340.00;
@@ -221,8 +233,8 @@ namespace MPU6050 {
         
     //    temperature = (gbuf[0] << 8) | gbuf[1] ;
     
-
-    /*
+*/
+    
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
@@ -232,8 +244,15 @@ namespace MPU6050 {
         gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
-    */
+    
+        ax = int16(ax);
+        ay = int16(ay);
+        az = int16(az);
+        gx = int16(gx);
+        gy = int16(gy);
+        gz = int16(gz);
 
+        temperature = int16(temperature);
 
 
 
