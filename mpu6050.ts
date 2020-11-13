@@ -78,12 +78,14 @@ namespace RegisterHelper {
 
     export function readRegister8N(addr: number,reg:number, rep: number) {
 
+        let num = rep-2;
+
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE, true);
-        for (let i = 0; i < (rep-1); i++) {
+        for (let i = 0; i < num; i++) {
             gbuf[i] =  pins.i2cReadNumber(addr, NumberFormat.UInt8BE, true);      
         
         }
-        gbuf[rep-1] = pins.i2cReadNumber(addr, NumberFormat.UInt8BE, false);
+        gbuf[num+1] = pins.i2cReadNumber(addr, NumberFormat.UInt8BE, false);
     }
 
     /**
@@ -189,7 +191,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 15"
+    //% blockId="getMotion" block="Read Motion Data 16"
     export function getMotion6() {
 /*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
