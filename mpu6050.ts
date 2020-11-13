@@ -45,8 +45,7 @@ let gyr_buf = pins.createBuffer(6);
 let tem_buf = pins.createBuffer(2);
 
 
-let gbuf:number[];
-// let gbuf = pins.createBuffer(14);
+let gbuf = pins.createBuffer(14);
 let ax: number;
 let ay: number;
 let az: number;
@@ -192,38 +191,40 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 17"
+    //% blockId="getMotion" block="Read Motion Data 18"
     export function getMotion6() {
-/*
+
         let reg = MPU6050_RA_ACCEL_XOUT_H;
         for(let i=0 ; i< 14 ; i++ ) {
             gbuf[i] = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, reg+i );   
         }
 
-*/
 
 
-        RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
+
+        // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
         
         
 
+
+
+    
 /*
+        ax = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H)
+        ay = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+2)
+        az = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+4)
 
         temperature = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
     //    temperature /= 340.00;
     //    temperature += 36.53;
 
 
-        ax = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H)
-        ay = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+2)
-        az = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+4)
-
 
         gx = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H)
         gy = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+2)
         gz = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+4)
-
-
+*/
+/*
         ax /= 16384.0;
         ay /= 16384.0;
         az /= 16384.0;
@@ -231,12 +232,12 @@ namespace MPU6050 {
         gx /= 131.0;
         gy /= 131.0;
         gz /= 131.0;
-
+*/
 
         
     //    temperature = (gbuf[0] << 8) | gbuf[1] ;
     
-*/
+
     
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
@@ -247,6 +248,9 @@ namespace MPU6050 {
         gx = ( gbuf[8] << 8) | gbuf[9] ;
         gy = (gbuf[10] << 8) | gbuf[11] ;
         gz = (gbuf[12] << 8) | gbuf[13] ;
+
+
+        /*
     
         ax = int16(ax);
         ay = int16(ay);
@@ -256,8 +260,8 @@ namespace MPU6050 {
         gz = int16(gz);
 
         temperature = int16(temperature);
-
-
+        */
+    
 
     }   
 
