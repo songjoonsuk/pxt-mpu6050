@@ -45,7 +45,8 @@ let gyr_buf = pins.createBuffer(6);
 let tem_buf = pins.createBuffer(2);
 
 
-let gbuf = pins.createBuffer(14);
+let gbuf:number[];
+// let gbuf = pins.createBuffer(14);
 let ax: number;
 let ay: number;
 let az: number;
@@ -191,7 +192,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 16"
+    //% blockId="getMotion" block="Read Motion Data 17"
     export function getMotion6() {
 /*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
