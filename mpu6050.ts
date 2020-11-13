@@ -191,7 +191,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 18"
+    //% blockId="getMotion" block="Read Motion Data 19"
     export function getMotion6() {
 
         let reg = MPU6050_RA_ACCEL_XOUT_H;
@@ -250,7 +250,7 @@ namespace MPU6050 {
         gz = (gbuf[12] << 8) | gbuf[13] ;
 
 
-        /*
+        
     
         ax = int16(ax);
         ay = int16(ay);
@@ -260,7 +260,7 @@ namespace MPU6050 {
         gz = int16(gz);
 
         temperature = int16(temperature);
-        */
+        
     
 
     }   
