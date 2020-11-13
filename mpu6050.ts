@@ -191,25 +191,20 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 19"
+    //% blockId="getMotion" block="Read Motion Data 20"
     export function getMotion6() {
 
+/*
         let reg = MPU6050_RA_ACCEL_XOUT_H;
         for(let i=0 ; i< 14 ; i++ ) {
             gbuf[i] = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, reg+i );   
         }
-
-
-
+*/
 
         // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
-        
-        
-
-
 
     
-/*
+
         ax = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H)
         ay = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+2)
         az = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+4)
@@ -223,7 +218,9 @@ namespace MPU6050 {
         gx = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H)
         gy = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+2)
         gz = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+4)
-*/
+
+
+
 /*
         ax /= 16384.0;
         ay /= 16384.0;
@@ -235,10 +232,7 @@ namespace MPU6050 {
 */
 
         
-    //    temperature = (gbuf[0] << 8) | gbuf[1] ;
-    
-
-    
+/*   
         ax = (gbuf[0] << 8) | gbuf[1] ;
         ay = (gbuf[2] << 8) | gbuf[3] ;
         az = (gbuf[4] << 8) | gbuf[5] ;
@@ -260,7 +254,7 @@ namespace MPU6050 {
         gz = int16(gz);
 
         temperature = int16(temperature);
-        
+*/        
     
 
     }   
