@@ -39,6 +39,14 @@ const MPU6050_RA_USER_CTRL              =   0x6A
 const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
 
+const MPU6050_XG_OFFSET_H           = 0x13;
+const MPU6050_YG_OFFSET_H           = 0x15;
+const MPU6050_ZG_OFFSET_H           = 0x17;
+
+
+
+
+
 
 let acc_buf = pins.createBuffer(6);
 let gyr_buf = pins.createBuffer(6);
@@ -54,9 +62,30 @@ let gy: number;
 let gz: number;
 let temperature: number;
 
+let gyro_x_bias: number;
+let gyro_y_bias: number;
+let gyro_z_bias: number;
+
+let var_x: number;
+let var_y: number;
+let var_z: number;
+
+
+
 
 //Functions for helping with reading and writing registers of different sizes
 namespace RegisterHelper {
+
+    export function mpu_write(reg: number, data: number) {
+        pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, reg << 8 | (data & 0xff), NumberFormat.UInt16BE);
+    }
+
+    export function mpu_write_int16(reg: number, data: number) {
+        mpu_write(reg, (data >> 8) & 0xff);
+        mpu_write(reg + 1, data & 0xff);
+    }
+
+
 
     /**
      * Write register of the address location
@@ -191,7 +220,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 20"
+    //% blockId="getMotion" block="Read Motion Data 21"
     export function getMotion6() {
 
 /*
@@ -289,6 +318,88 @@ namespace MPU6050 {
     }
 
 
+    /**
+     * Compute the gyro bias for all three axis. The bias for each axis is the average of 100 samples.
+     * Returns true if the sensor is steady enough to calculate the bias.
+     * The bias values are store in gyro_x_bias, gyro_y_bias and gyro_z_bias.
+     */
+    //% block
+    //% weight=97
+    export function compute_gyro_bias(): boolean {
+
+
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_XG_OFFSET_H,      0);
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_XG_OFFSET_H + 1,  0);
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_YG_OFFSET_H,      0);
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_YG_OFFSET_H + 1,  0);
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_ZG_OFFSET_H,      0);
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS, MPU6050_ZG_OFFSET_H + 1,  0);
+
+        
+        const N = 100;
+        const MAX_VAR = 40;
+        let sum_x = 0, sum_y = 0, sum_z = 0;
+        let xs: number[] = [], ys: number[] = [], zs: number[] = [];
+        for (let i = 0; i < N; i++) {
+
+            let x = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H)
+            let y = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+2)
+            let z = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_GYRO_XOUT_H+4)
+
+            
+            sum_x += x;
+            sum_y += y;
+            sum_z += z;
+            xs.push(x);
+            ys.push(y);
+            zs.push(z);
+            basic.pause(1);
+        }
+        let mean_x = sum_x / N;
+        let mean_y = sum_y / N;
+        let mean_z = sum_z / N;
+        var_x = 0;
+        var_y = 0;
+        var_z = 0;
+        for (let i = 0; i < N; i++) {
+            let dx = xs[i] - mean_x;
+            var_x = var_x + dx * dx;
+            let dy = ys[i] - mean_y;
+            var_y = var_y + dy * dy;
+            let dz = zs[i] - mean_z;
+            var_z = var_z + dz * dz;
+        }
+        var_x = var_x / N;
+        var_y = var_y / N;
+        var_z = var_z / N;
+        if (var_x > MAX_VAR || var_y > MAX_VAR || var_z > MAX_VAR) {
+            return false;
+        }
+        gyro_x_bias = mean_x;
+        gyro_y_bias = mean_y;
+        gyro_z_bias = mean_z;
+        return true;
+    }
+
+
+
+    /**
+     * Set the gyro bias. The bias can be calculated by calling get_gyro_bias().
+     * @param x_bias Bias in the X direction, eg: 0
+     * @param y_bias Bias in the Y direction, eg: 0
+     * @param z_bias Bias in the Z direction, eg: 0
+     */
+    //% block
+    //% weight=96
+    export function set_gyro_bias(x_bias: number, y_bias: number, z_bias: number) {
+
+        RegisterHelper.mpu_write_int16(MPU6050_XG_OFFSET_H, -2 * x_bias);
+        RegisterHelper.mpu_write_int16(MPU6050_YG_OFFSET_H, -2 * y_bias);
+        RegisterHelper.mpu_write_int16(MPU6050_ZG_OFFSET_H, -2 * z_bias);
+    }
 
 
 
