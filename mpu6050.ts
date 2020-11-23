@@ -76,8 +76,8 @@ let var_z: number;
 namespace RegisterHelper {
 
     export function mpu_write(reg: number, data: number) {
-    //    pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, reg << 8 | (data & 0xff), NumberFormat.UInt16BE);
-        pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, (reg && 0xff) | (data << 8), NumberFormat.UInt16BE);
+        pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, reg << 8 | (data & 0xff), NumberFormat.UInt16BE);
+    //    pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, (reg && 0xff) | (data << 8), NumberFormat.UInt16BE);
     }
 
     export function mpu_write_int16(reg: number, data: number) {
@@ -224,7 +224,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 23"
+    //% blockId="getMotion" block="Read Motion Data 24"
     export function getMotion6() {
 
 /*
