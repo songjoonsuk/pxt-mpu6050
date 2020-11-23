@@ -189,7 +189,7 @@ namespace MPU6050 {
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, 1000);
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1000);
 
 
     }
@@ -224,7 +224,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 22"
+    //% blockId="getMotion" block="Read Motion Data 23"
     export function getMotion6() {
 
 /*
