@@ -28,16 +28,15 @@ const MPU6050_RA_XG_OFFS_TC             =   0x00 //[7] PWR_MODE, [6:1] XG_OFFS_T
 const MPU6050_RA_YG_OFFS_TC             =   0x01 //[7] PWR_MODE, [6:1] YG_OFFS_TC, [0] OTP_BNK_VLD
 const MPU6050_RA_ZG_OFFS_TC             =   0x02 //[7] PWR_MODE, [6:1] ZG_OFFS_TC, [0] OTP_BNK_VLD
 
-const MPU6050_RA_XA_OFFS_H              =   0x06 //[15:0] XA_OFFS
-const MPU6050_RA_YA_OFFS_H              =   0x08 //[15:0] YA_OFFS
-const MPU6050_RA_ZA_OFFS_H              =   0x0A //[15:0] ZA_OFFS
-
 const MPU6050_RA_ACCEL_XOUT_H           =   0x3B
 const MPU6050_RA_TEMP_OUT_H             =   0x41
 const MPU6050_RA_GYRO_XOUT_H            =   0x43
 const MPU6050_RA_USER_CTRL              =   0x6A
 const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
+const MPU6050_RA_XA_OFFS_H              =   0x06 //[15:0] XA_OFFS
+const MPU6050_RA_YA_OFFS_H              =   0x08 //[15:0] YA_OFFS
+const MPU6050_RA_ZA_OFFS_H              =   0x0A //[15:0] ZA_OFFS
 
 const MPU6050_XG_OFFSET_H           = 0x13;
 const MPU6050_YG_OFFSET_H           = 0x15;
@@ -77,7 +76,8 @@ let var_z: number;
 namespace RegisterHelper {
 
     export function mpu_write(reg: number, data: number) {
-        pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, reg << 8 | (data & 0xff), NumberFormat.UInt16BE);
+    //    pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, reg << 8 | (data & 0xff), NumberFormat.UInt16BE);
+        pins.i2cWriteNumber(MPU6050_DEFAULT_ADDRESS, (reg && 0xff) | (data << 8), NumberFormat.UInt16BE);
     }
 
     export function mpu_write_int16(reg: number, data: number) {
@@ -224,7 +224,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 21"
+    //% blockId="getMotion" block="Read Motion Data 22"
     export function getMotion6() {
 
 /*
