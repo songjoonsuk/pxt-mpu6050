@@ -188,6 +188,10 @@ namespace MPU6050 {
         SetFullScaleGyroRange();
         SetFullScaleAccelRange();
         SetSleepDisable();
+
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, 1000);
+
+
     }
 
     //% blockId="ReadClockSource" block="Read Clock Source"
