@@ -374,7 +374,8 @@ namespace MPU6050 {
         let avg_x = x_sum / count;
 
         let reg = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H);
-        reg -= avg_x/8;
+        avg_x /= 8;
+        reg -= avg_x;
         RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,reg);
 
     }
