@@ -189,10 +189,10 @@ namespace MPU6050 {
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1000);
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, 0);
 
-        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0xFC);
-        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0x18);
+        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0xFC);
+        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0x18);
 
     }
 
@@ -226,7 +226,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 25"
+    //% blockId="getMotion" block="Read Motion Data 26"
     export function getMotion6() {
 
 /*
@@ -245,8 +245,8 @@ namespace MPU6050 {
         az = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+4)
 
         temperature = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_TEMP_OUT_H);
-    //    temperature /= 340.00;
-    //    temperature += 36.53;
+        temperature /= 340.00;
+        temperature += 36.53;
 
 
 
