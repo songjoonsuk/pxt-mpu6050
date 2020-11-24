@@ -214,14 +214,19 @@ namespace MPU6050 {
     export function initialize() {
 
         DeviceReset()
-        basic.pause(300);
+        basic.pause(100);
 
         SetClockSource();
         SetFullScaleGyroRange();
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1864.52);
+        basic.pause(100);
+        AX_calib();
+
+
+
+        // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1864.52);
 
         // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0x55);
         // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0x33);
@@ -258,7 +263,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 36"
+    //% blockId="getMotion" block="Read Motion Data 37"
     export function getMotion6() {
 
 /*
@@ -354,6 +359,29 @@ namespace MPU6050 {
     export function readTemperature() : number {
         return temperature;
     }
+
+
+    //% block
+    //% weight=95
+    export function AX_calib() {
+
+        let count = 500;
+        let x_sum : number;
+        for(let i=0;i< count;i++) {
+            x_sum = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H);
+
+        }
+        let avg_x = x_sum / count;
+
+        let reg = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H);
+        reg -= avg_x/8;
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,reg);
+
+    }
+
+
+
+
 
 
     /**
