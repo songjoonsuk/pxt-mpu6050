@@ -263,7 +263,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 38"
+    //% blockId="getMotion" block="Read Motion Data 39"
     export function getMotion6() {
 
 /*
@@ -365,8 +365,10 @@ namespace MPU6050 {
     //% weight=95
     export function AX_calib() {
 
-        let count = 500;
+        const count = 500;
         let x_sum : number;
+
+        x_sum = 0;
         for(let i=0;i< count;i++) {
             x_sum += RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H);
 
