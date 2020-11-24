@@ -138,6 +138,11 @@ namespace RegisterHelper {
 //% weight=100 color=#0fbc11 icon=""
 namespace MPU6050 {
 
+    function DeviceReset() {
+
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, 0x80 ); 
+    }
+
 
     function SetClockSource() {
 
@@ -198,6 +203,10 @@ namespace MPU6050 {
     
     //% blockId="Initialize" block="Initailize Gyro Sensor 2"
     export function initialize() {
+
+        DeviceReset()
+        basic.pause(300);
+
         SetClockSource();
         SetFullScaleGyroRange();
         SetFullScaleAccelRange();
@@ -240,7 +249,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 33"
+    //% blockId="getMotion" block="Read Motion Data 34"
     export function getMotion6() {
 
 /*
