@@ -34,7 +34,7 @@ const MPU6050_RA_GYRO_XOUT_H            =   0x43
 const MPU6050_RA_USER_CTRL              =   0x6A
 const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
-const MPU6050_RA_XA_OFFS_H              =   0x06 //[15:0] XA_OFFS
+const MPU6050_RA_XA_OFFS_H              =   0x77 // 0x06 //[15:0] XA_OFFS
 const MPU6050_RA_YA_OFFS_H              =   0x08 //[15:0] YA_OFFS
 const MPU6050_RA_ZA_OFFS_H              =   0x0A //[15:0] ZA_OFFS
 
@@ -189,10 +189,10 @@ namespace MPU6050 {
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, 0);
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1000);
 
-         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0);
-         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0);
+        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0);
+        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0);
 
     }
 
@@ -226,7 +226,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 28"
+    //% blockId="getMotion" block="Read Motion Data 29"
     export function getMotion6() {
 
 /*
