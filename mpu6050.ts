@@ -203,8 +203,8 @@ namespace MPU6050 {
 
         // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1000);
 
-        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0);
-        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0);
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0x55);
+        RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0x33);
 
     }
 
