@@ -172,14 +172,16 @@ namespace MPU6050 {
         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
     }
 
-    //%
+    //% block
+    //% weight=100
     export function getXAoffsH() : number {
         
         let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H); 
         return device_id;
     }
       
-    //%  
+    //% block
+    //% weight=99
     export function getXAoffsL() : number {
         
         let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H+1); 
