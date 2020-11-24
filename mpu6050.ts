@@ -221,7 +221,7 @@ namespace MPU6050 {
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        basic.pause(100);
+        basic.pause(2000);
         AX_calib();
 
 
