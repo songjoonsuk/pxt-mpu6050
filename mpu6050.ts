@@ -193,6 +193,15 @@ namespace MPU6050 {
         return device_id;
     }
 
+    //% block
+    //% weight=98
+    export function GetXAOffset() : number {
+
+        let XA_ofs = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H);
+
+        return XA_ofs;
+    }
+
      
     //% blockId="getDeviceID" block="Read Gyro Device ID"
     export function getDeviceID() : number {
@@ -249,7 +258,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 34"
+    //% blockId="getMotion" block="Read Motion Data 35"
     export function getMotion6() {
 
 /*
@@ -353,7 +362,7 @@ namespace MPU6050 {
      * The bias values are store in gyro_x_bias, gyro_y_bias and gyro_z_bias.
      */
     //% block
-    //% weight=97
+    //% weight=90
     export function compute_gyro_bias(): boolean {
 
 
