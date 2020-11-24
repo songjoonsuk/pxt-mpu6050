@@ -365,7 +365,7 @@ namespace MPU6050 {
     //% weight=95
     export function AX_calib() {
 
-        const count = 500;
+        const count = 5000;
         let x_sum : number;
 
         x_sum = 0;
