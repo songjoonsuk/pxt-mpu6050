@@ -34,7 +34,7 @@ const MPU6050_RA_GYRO_XOUT_H            =   0x43
 const MPU6050_RA_USER_CTRL              =   0x6A
 const MPU6050_USERCTRL_FIFO_RESET_BIT   =   2
 
-const MPU6050_RA_XA_OFFS_H              =   0x77 // 0x06 //[15:0] XA_OFFS
+const MPU6050_RA_XA_OFFS_H              =   0x06 //[15:0] XA_OFFS
 const MPU6050_RA_YA_OFFS_H              =   0x08 //[15:0] YA_OFFS
 const MPU6050_RA_ZA_OFFS_H              =   0x0A //[15:0] ZA_OFFS
 
@@ -172,9 +172,21 @@ namespace MPU6050 {
         RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_PWR_MGMT_1, temp); 
     }
 
+    //%
+    export function getXAoffsH() : number {
+        
+        let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H); 
+        return device_id;
+    }
+      
+    //%  
+    export function getXAoffsL() : number {
+        
+        let device_id = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H+1); 
+        return device_id;
+    }
 
-
-
+     
     //% blockId="getDeviceID" block="Read Gyro Device ID"
     export function getDeviceID() : number {
         
@@ -226,7 +238,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 30"
+    //% blockId="getMotion" block="Read Motion Data 31"
     export function getMotion6() {
 
 /*
