@@ -221,8 +221,15 @@ namespace MPU6050 {
         SetFullScaleAccelRange();
         SetSleepDisable();
 
-        basic.pause(2000);
-        AX_calib();
+        
+
+        basic.pause(100);
+
+        for(let i=0; i<10; i++) {
+
+            AX_calib();
+
+        }
 
 
 
@@ -263,7 +270,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 44"
+    //% blockId="getMotion" block="Read Motion Data 45"
     export function getMotion6() {
 
 /*
