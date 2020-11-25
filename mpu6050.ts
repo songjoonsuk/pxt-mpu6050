@@ -227,7 +227,7 @@ namespace MPU6050 {
 
         while(1) {
 
-            if( AX_calib() < 10 ) break;
+            if( Math.abs(AX_calib()) < 10 ) break;
 
         }
 
