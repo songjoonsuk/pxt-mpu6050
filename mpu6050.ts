@@ -263,7 +263,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 40"
+    //% blockId="getMotion" block="Read Motion Data 41"
     export function getMotion6() {
 
 /*
@@ -365,7 +365,7 @@ namespace MPU6050 {
     //% weight=95
     export function AX_calib(): number {
 
-        const count = 5000;
+        const count = 1000;
         let x_sum : number;
 
         x_sum = 0;
