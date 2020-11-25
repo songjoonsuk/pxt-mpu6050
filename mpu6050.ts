@@ -263,7 +263,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 41"
+    //% blockId="getMotion" block="Read Motion Data 42"
     export function getMotion6() {
 
 /*
@@ -376,11 +376,14 @@ namespace MPU6050 {
         let avg_x = x_sum / count;
 
 
-        return avg_x;
+        
 
         let reg = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS, MPU6050_RA_XA_OFFS_H);
         avg_x /= 8;
         reg -= avg_x;
+
+        return avg_x;
+        
         // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,reg);
 
 
