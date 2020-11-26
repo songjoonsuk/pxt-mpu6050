@@ -268,7 +268,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 47"
+    //% blockId="getMotion" block="Read Motion Data 48"
     export function getMotion6() {
 
  
@@ -337,7 +337,7 @@ namespace MPU6050 {
             getMotion6();
             x_sum += ax;
 
-            basic.pause(2);
+        //    basic.pause(2);
 
         }
         avg_ax = x_sum / count;
