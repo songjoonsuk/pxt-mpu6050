@@ -231,7 +231,7 @@ namespace MPU6050 {
         SetSleepDisable();
 
         
-        calib();
+        AX_calib();
                
 
      
@@ -369,10 +369,13 @@ namespace MPU6050 {
 
     //% block
     //% weight=95
-    export function AX_calib(): number {
+    export function AX_calib(): any {
 
         const count = 1000;
         let x_sum : number;
+
+
+        while(1) {
 
         x_sum = 0;
 
@@ -391,7 +394,9 @@ namespace MPU6050 {
     
         RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,reg);
 
-        return mean_x;
+        if( Math.abs(mean_x) < 5 ) return 1;
+
+        }
 
     }
 
