@@ -43,7 +43,8 @@ const MPU6050_YG_OFFSET_H           = 0x15;
 const MPU6050_ZG_OFFSET_H           = 0x17;
 
 
-
+const ACC_ERR_LIMIT     = 10;
+const GYRO_ERR_LIMIT    = 2;
 
 
 
@@ -68,6 +69,14 @@ let gyro_z_bias: number;
 let var_x: number;
 let var_y: number;
 let var_z: number;
+
+let avg_ax: number;
+let avg_ay: number;
+let avg_az: number;
+
+let ax_offset: number;
+let ay_offset: number;
+let az_offset: number;
 
 
 
@@ -222,21 +231,10 @@ namespace MPU6050 {
         SetSleepDisable();
 
         
+        calib();
+               
 
-        basic.pause(100);
-
-        while(1) {
-
-            if( Math.abs(AX_calib()) < 4 ) break;
-
-        }
-
-
-
-        // RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H, -1864.52);
-
-        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H, 0x55);
-        // RegisterHelper.writeRegister(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_XA_OFFS_H + 1, 0x33);
+     
 
     }
 
@@ -270,19 +268,10 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 46"
+    //% blockId="getMotion" block="Read Motion Data 47"
     export function getMotion6() {
 
-/*
-        let reg = MPU6050_RA_ACCEL_XOUT_H;
-        for(let i=0 ; i< 14 ; i++ ) {
-            gbuf[i] = RegisterHelper.readRegister8(MPU6050_DEFAULT_ADDRESS, reg+i );   
-        }
-*/
-
-        // RegisterHelper.readRegister8N(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H, 14);
-
-    
+ 
 
         ax = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H)
         ay = RegisterHelper.readRegisterInt16(MPU6050_DEFAULT_ADDRESS,MPU6050_RA_ACCEL_XOUT_H+2)
@@ -300,40 +289,6 @@ namespace MPU6050 {
 
 
 
-/*
-        ax /= 16384.0;
-        ay /= 16384.0;
-        az /= 16384.0;
-
-        gx /= 131.0;
-        gy /= 131.0;
-        gz /= 131.0;
-*/
-
-        
-/*   
-        ax = (gbuf[0] << 8) | gbuf[1] ;
-        ay = (gbuf[2] << 8) | gbuf[3] ;
-        az = (gbuf[4] << 8) | gbuf[5] ;
-
-        temperature = (gbuf[6] << 8) | gbuf[7] ;
-
-        gx = ( gbuf[8] << 8) | gbuf[9] ;
-        gy = (gbuf[10] << 8) | gbuf[11] ;
-        gz = (gbuf[12] << 8) | gbuf[13] ;
-
-
-        
-    
-        ax = int16(ax);
-        ay = int16(ay);
-        az = int16(az);
-        gx = int16(gx);
-        gy = int16(gy);
-        gz = int16(gz);
-
-        temperature = int16(temperature);
-*/        
     
 
     }   
@@ -368,6 +323,50 @@ namespace MPU6050 {
     }
 
 
+    export function get_avg() {
+
+        const count = 1000;
+        let x_sum : number;
+
+        x_sum = 0;
+
+        
+
+        for(let i=0;i< count;i++) {
+
+            getMotion6();
+            x_sum += ax;
+
+            basic.pause(2);
+
+        }
+        avg_ax = x_sum / count;
+
+    }
+
+    export function calib(): any {
+
+
+        get_avg();
+
+        ax_offset = avg_ax / 8;
+
+        while(1) {
+            RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,ax_offset);
+            get_avg();
+
+            if( Math.abs(avg_ax) < ACC_ERR_LIMIT ) return avg_ax;
+            else {
+                let tmp = avg_ax / ACC_ERR_LIMIT;
+                ax_offset -= tmp;
+            }
+
+        }
+        
+    }
+
+
+
     //% block
     //% weight=95
     export function AX_calib(): number {
@@ -396,6 +395,7 @@ namespace MPU6050 {
 
     }
 
+   
 
 
     /**
