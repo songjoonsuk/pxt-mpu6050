@@ -268,7 +268,7 @@ namespace MPU6050 {
         return v & 0xFFFF;
     }
 
-    //% blockId="getMotion" block="Read Motion Data 50"
+    //% blockId="getMotion" block="Read Motion Data 51"
     export function getMotion6() {
 
  
@@ -373,6 +373,8 @@ namespace MPU6050 {
 
         const count = 1000;
         let x_sum : number;
+
+        RegisterHelper.mpu_write_int16(MPU6050_RA_XA_OFFS_H,0);
 
 
         while(1) {
